@@ -1,0 +1,96 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://FX/star.png" type="Texture" id=1]
+[ext_resource path="res://FX/LandingParticles2D.gd" type="Script" id=2]
+[ext_resource path="res://Images/characters_packed.png" type="Texture" id=3]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.172897, 0.364486, 0.514019, 0.64486, 0.78972, 0.943925 )
+colors = PoolColorArray( 1, 0, 0, 1, 1, 0.631373, 0, 1, 0.968627, 1, 0, 1, 0.243137, 1, 0, 1, 0, 0.952941, 1, 1, 0.0313726, 0, 1, 1, 0.921569, 0, 1, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+min_value = -1.0
+_data = [ Vector2( 0, 1 ), 0.0, 2.8, 0, 0, Vector2( 0.396624, -0.290909 ), 0.0, 0.0, 0, 0, Vector2( 0.654008, 0.927273 ), 0.0, 0.0, 0, 0, Vector2( 0.970464, -0.272727 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="Curve" id=8]
+_data = [ Vector2( 0, 0.520455 ), 0.0, 1.13397, 0, 0, Vector2( 1, 1 ), 1.4, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=9]
+curve = SubResource( 8 )
+
+[sub_resource type="ParticlesMaterial" id=7]
+trail_divisor = 7
+trail_size_modifier = SubResource( 9 )
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 154.69
+angular_velocity = 326.25
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 0.5
+color_ramp = SubResource( 2 )
+hue_variation_random = 0.64
+hue_variation_curve = SubResource( 4 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 3 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 3 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 3 )
+region = Rect2( 192, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 3 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 3 )
+region = Rect2( 168, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ SubResource( 10 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ), SubResource( 12 ) ],
+"loop": true,
+"name": "Hurt",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ), SubResource( 5 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+} ]
+
+[node name="Particles2D" type="Particles2D"]
+emitting = false
+amount = 16
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+fract_delta = false
+process_material = SubResource( 7 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+visible = false
+position = Vector2( 0.012867, 11.8467 )
+frames = SubResource( 14 )
+animation = "Hurt"
+offset = Vector2( -0.012867, -11.8467 )

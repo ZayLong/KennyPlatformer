@@ -1,0 +1,57 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
+[ext_resource path="res://Actors/Enemies/BlueBug/Blue Bug.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Actors/Enemies/Spike Bug/Spike Bug.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 72, 24, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 120, 24, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 96, 24, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=4]
+resource_local_to_scene = true
+resource_name = "AnimatedSpriteBase"
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "Hurt",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 1 ), SubResource( 3 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+resource_local_to_scene = true
+extents = Vector2( 8, 5 )
+
+[sub_resource type="RectangleShape2D" id=6]
+resource_local_to_scene = true
+extents = Vector2( 6.12475, 1.07716 )
+
+[node name="Spike Bug" instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" parent="." index="0"]
+frames = SubResource( 4 )
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D" parent="DamageArea2D" index="0"]
+shape = SubResource( 6 )

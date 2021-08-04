@@ -1,0 +1,89 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
+[ext_resource path="res://Actors/Enemies/BlueBug/Blue Bug.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=12]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 168, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=15]
+resource_local_to_scene = true
+resource_name = "AnimatedSpriteBase"
+animations = [ {
+"frames": [ SubResource( 11 ), SubResource( 12 ) ],
+"loop": true,
+"name": "Hurt",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 11 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 13 ), SubResource( 14 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=9]
+resource_local_to_scene = true
+extents = Vector2( 8, 5 )
+
+[sub_resource type="RectangleShape2D" id=10]
+resource_local_to_scene = true
+extents = Vector2( 6.12475, 1.07716 )
+
+[node name="Blue Bug" type="KinematicBody2D" groups=[
+"Enemies",
+]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.012867, 11.8467 )
+frames = SubResource( 15 )
+animation = "Hurt"
+offset = Vector2( -0.012867, -11.8467 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=[
+"Enemies",
+]]
+position = Vector2( 0, 6 )
+shape = SubResource( 9 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( -8.158, 0 )
+enabled = true
+cast_to = Vector2( 0, 27.99 )
+
+[node name="DamageArea2D" type="Area2D" parent="." groups=[
+"Enemy Weak Point",
+]]
+position = Vector2( 0.303375, 0.309077 )
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
+position = Vector2( 0.280613, -0.210459 )
+shape = SubResource( 10 )
+one_way_collision = true
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="area_entered" from="DamageArea2D" to="." method="_on_DamageArea2D_area_entered"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

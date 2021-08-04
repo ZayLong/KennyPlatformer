@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Wall.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Actor_Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MovingPlatform.tscn" type="PackedScene" id=3]
+[ext_resource path="res://FadingPlatform.tscn" type="PackedScene" id=4]
+
+[node name="NewWorld" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 144, 432 )
+
+[node name="Walls" type="Node" parent="."]
+
+[node name="Wall16" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 144, 450 )
+
+[node name="Wall17" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 252, 450 )
+
+[node name="Wall18" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 234, 450 )
+
+[node name="Wall19" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 162, 450 )
+
+[node name="Wall20" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 180, 450 )
+
+[node name="Wall21" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 198, 450 )
+
+[node name="Wall22" parent="Walls" instance=ExtResource( 1 )]
+position = Vector2( 216, 450 )
+
+[node name="FadingPlatform" parent="Walls" instance=ExtResource( 4 )]
+position = Vector2( 252, 414 )
+on_time = 5.0
+
+[node name="MovingPlatform" parent="." instance=ExtResource( 3 )]
+position = Vector2( 54, 396 )
+offset = Vector2( 0, -48 )
+
+[node name="MovingPlatform2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 342, 396 )
+jump_through = true
+offset = Vector2( -48, 0 )

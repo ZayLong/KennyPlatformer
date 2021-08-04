@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Images/tiles_packed.png" type="Texture" id=1]
+[ext_resource path="res://Props/Spring/Spring.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 90, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 126, 90, 18, 18 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "Sprung",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "Set",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 8.87691, 1.96156 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8.85452, 13.4164 )
+
+[node name="Spring" type="AnimatedSprite"]
+frames = SubResource( 3 )
+animation = "Set"
+script = ExtResource( 2 )
+
+[node name="BounceArea2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceArea2D"]
+position = Vector2( -0.13302, -0.569354 )
+shape = SubResource( 4 )
+
+[node name="BounceToleranceArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BounceToleranceArea2D"]
+position = Vector2( 0.101898, -10.2603 )
+shape = SubResource( 5 )
+
+[connection signal="area_entered" from="BounceArea2D" to="." method="_on_SpringArea2D_area_entered"]

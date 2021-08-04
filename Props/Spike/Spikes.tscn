@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Images/tiles_packed.png" type="Texture" id=1]
+[ext_resource path="res://Props/Spike/Spikes.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 54, 18, 18 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 7.12218, 1.1296 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 8.89751, 4.96564 )
+
+[node name="Spikes" type="Sprite"]
+texture = SubResource( 1 )
+script = ExtResource( 2 )
+
+[node name="DamageArea2D" type="Area2D" parent="." groups=[
+"Damage Area",
+]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D" groups=[
+"Damage Area",
+]]
+shape = SubResource( 2 )
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( -0.0523739, 4.04667 )
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="DamageArea2D" to="." method="_on_DamageArea2D_body_entered"]

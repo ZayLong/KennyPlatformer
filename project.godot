@@ -1,0 +1,57 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Tween",
+"class": "CurveTween",
+"language": "GDScript",
+"path": "res://CurveTween/CurveTween.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "PlayerController",
+"language": "GDScript",
+"path": "res://Actors/Player/Player.gd"
+} ]
+_global_script_class_icons={
+"CurveTween": "",
+"PlayerController": ""
+}
+
+[application]
+
+config/name="Kenny Platformer"
+run/main_scene="res://World.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+GameManager="*res://GameManager.tscn"
+CollisionManager="*res://CollisionManager.gd"
+
+[display]
+
+window/size/width=640
+window/size/height=480
+
+[layer_names]
+
+2d_physics/layer_1="Main"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="Props"
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+2d/snapping/use_gpu_pixel_snap=true
+environment/default_environment="res://default_env.tres"

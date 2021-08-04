@@ -1,0 +1,139 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
+[ext_resource path="res://Actors/Player/Player.gd" type="Script" id=2]
+[ext_resource path="res://FX/StartRunningParticles2D.tscn" type="PackedScene" id=3]
+[ext_resource path="res://FX/LandingParticles2D.tscn" type="PackedScene" id=4]
+[ext_resource path="res://GUI/Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://FX/HitEnemyParticles2D.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform vec4 flash_color : hint_color = vec4(1.0);
+uniform float flash_modifier : hint_range(0.0,1.0) = 0.0;
+void fragment(){
+	vec4 color = texture(TEXTURE, UV);
+	color.rgb = mix(color.rgb, flash_color.rgb, flash_modifier);
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 1 )
+region = Rect2( 24, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=7]
+height = 3.12181
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 6.33504, 2.45864 )
+
+[sub_resource type="Animation" id=9]
+resource_name = "DamageFlash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/flash_modifier")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.9 ]
+}
+
+[node name="Player" type="KinematicBody2D" groups=[
+"Player",
+]]
+material = SubResource( 2 )
+collision_layer = 2
+collision_mask = 13
+script = ExtResource( 2 )
+LandingParticles2D = ExtResource( 4 )
+RunningParticles2D = ExtResource( 3 )
+HitEnemygParticles2D = ExtResource( 6 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+use_parent_material = true
+position = Vector2( -0.130203, 11.2182 )
+frames = SubResource( 6 )
+animation = "Idle"
+offset = Vector2( 0.130203, -11.2182 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+limit_smoothed = true
+smoothing_enabled = true
+drag_margin_left = 0.41
+drag_margin_top = 0.8
+drag_margin_right = 0.4
+editor_draw_drag_margin = true
+script = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="Camera2D"]
+
+[node name="Timer" type="Timer" parent="Camera2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 7 )
+
+[node name="FeetArea2D" type="Area2D" parent="."]
+position = Vector2( -0.19841, 11.3102 )
+collision_layer = 3
+collision_mask = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FeetArea2D"]
+shape = SubResource( 8 )
+
+[node name="InvincibilityTimer" type="Timer" parent="."]
+wait_time = 3.0
+__meta__ = {
+"_editor_description_": "When this timer runs out, invincibility ends"
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="ParticlePosition2D" type="Position2D" parent="."]
+position = Vector2( -0.117981, 11.0905 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/DamageFlash = SubResource( 9 )
+
+[node name="ResetMaxSpeedTimer" type="Timer" parent="."]
+wait_time = 0.25
+
+[connection signal="timeout" from="Camera2D/Timer" to="Camera2D" method="_on_Timer_timeout"]
+[connection signal="area_entered" from="FeetArea2D" to="." method="_on_FeetArea2D_area_entered"]
+[connection signal="area_exited" from="FeetArea2D" to="." method="_on_FeetArea2D_area_exited"]
+[connection signal="timeout" from="InvincibilityTimer" to="." method="_on_InvincibilityTimer_timeout"]
+[connection signal="timeout" from="ResetMaxSpeedTimer" to="." method="_on_ResetMaxSpeedTimer_timeout"]
