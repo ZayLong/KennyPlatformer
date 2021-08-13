@@ -1,13 +1,66 @@
 extends Node2D
-func check_walls_collision(entity, offset)->bool:
+# PROPERTIES ============================================================================
+var tile_hitbox:HitBox
+var base_tilemap:TileMap
+
+# METHODS ============================================================================
+func check_actor_group_collision(entity:Actor, group:String, offset:Vector2)->bool:
+	var group_members = get_tree().get_nodes_in_group(group)
+	for member in group_members: 
+		#member = member as Actor
+		if member != entity:
+			if entity.hitbox.intersects(member.hitbox, offset):
+				return true
+	return false
+
+func check_walls_collision(entity:Actor, offset:Vector2)->bool:
 	var walls = get_tree().get_nodes_in_group("Walls")
 	for wall in walls: 
 		if wall.jump_through:
+			# should we just make it sot hat is_riding is always going to have an offset vector of DOWN???/
 			if offset == Vector2.DOWN && entity.is_riding(wall, offset):
 				return true
 		elif entity.hitbox.intersects(wall.hitbox, offset):
 			return true
 	return false
+# solid, intangible, pass_through, interactable are the named ids for our tiles
+func check_tiles_collision(entity:Actor, offset:Vector2)->bool:
+	if !base_tilemap:
+		base_tilemap = get_tree().get_nodes_in_group("BaseTileMap").front() as TileMap
+		
+	# check interaction with solid tiles
+	var solid_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("solid"))
+	for tile in solid_tiles:
+		tile = tile as Vector2
+		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
+		if entity.hitbox.intersects_tile(global_tile_pos, base_tilemap.cell_size, offset):
+			return true
+	
+	# check interaction with tiles we can pass through from underneath and drop down from
+	var pass_through_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("pass_through"))
+	for tile in pass_through_tiles:
+		tile = tile as Vector2
+		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
+		if offset == Vector2.DOWN &&entity.is_riding_tile(global_tile_pos, base_tilemap.cell_size, offset):
+			return true
+	
+	# all other conditions have failed so  return false
+	return false
+	pass
+
+func check_hitbox_against_tile(hitbox:HitBox, offset:Vector2)->bool:
+	if !base_tilemap:
+		base_tilemap = get_tree().get_nodes_in_group("BaseTileMap").front() as TileMap
+
+	# check interaction with solid tiles
+	var solid_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("solid"))
+	for tile in solid_tiles:
+		tile = tile as Vector2
+		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
+		if hitbox.intersects_tile(global_tile_pos, base_tilemap.cell_size, offset):
+			return true
+	return false
+	pass
 
 func get_all_actors():
 	return get_tree().get_nodes_in_group("Actors")

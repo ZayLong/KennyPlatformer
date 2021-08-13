@@ -1,5 +1,6 @@
 tool
 extends Node2D
+class_name HitBox
 
 export var x:int = 0
 export var y:int = 0
@@ -9,12 +10,19 @@ export var color:Color = Color(0,0,1,0.5)
 export var disable_color:Color = Color(0,0,1,0.5)
 
 onready var original_color:Color = color
-var m_collidable = true
+var m_collidable:bool = true
 var collidable setget set_collidable, get_collidable
 var left setget ,get_left
 var right setget ,get_right
 var top setget ,get_top
 var bottom setget ,get_bottom
+
+func _init(init_x:int = x, init_y:int = y, init_width:int = width, init_height:int = height):
+	x = init_x
+	y = init_y
+	width = init_width
+	height = init_height
+	pass
 
 func set_collidable(value)->void:
 	if value:
@@ -48,7 +56,16 @@ func _physics_process(_delta)->void:
 	update()
 	pass
 
-func intersects(other, offset)->bool:
+# similar to regular intersects, but does the AABB calculation for a tile which does not have a hitbox
+func intersects_tile(tile_pos:Vector2, cell_size:Vector2, offset:Vector2)->bool:
+	var tile_right = tile_pos.x + cell_size.x
+	var tile_left  = tile_pos.x
+	var tile_bottom = tile_pos.y + cell_size.y
+	var tile_top = tile_pos.y 
+	return ((self.right + offset.x) > tile_left && (self.left + offset.x) < tile_right 
+	&& (self.bottom + offset.y) > tile_top && (self.top + offset.y) < tile_bottom)
+
+func intersects(other:HitBox, offset:Vector2)->bool:
 	if !self.collidable || !other.collidable:
 		return false
 	else:

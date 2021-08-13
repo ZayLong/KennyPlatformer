@@ -4,63 +4,63 @@
 [ext_resource path="res://Images/characters_packed.png" type="Texture" id=2]
 [ext_resource path="res://Actors/Enemies/Flying Bat/Fly Bug.gd" type="Script" id=3]
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 2 )
 region = Rect2( 144, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 2 )
-region = Rect2( 192, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=17]
-atlas = ExtResource( 2 )
-region = Rect2( 0, 24, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=18]
-atlas = ExtResource( 2 )
-region = Rect2( 24, 24, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=19]
-atlas = ExtResource( 2 )
-region = Rect2( 48, 24, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 2 )
-region = Rect2( 144, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 2 )
 region = Rect2( 168, 0, 24, 24 )
 
-[sub_resource type="SpriteFrames" id=15]
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 24, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 24, 24, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=7]
+atlas = ExtResource( 2 )
+region = Rect2( 48, 24, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=10]
+atlas = ExtResource( 2 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=11]
+atlas = ExtResource( 2 )
+region = Rect2( 192, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=12]
 resource_local_to_scene = true
 resource_name = "AnimatedSpriteBase"
 animations = [ {
-"frames": [ SubResource( 11 ), SubResource( 12 ) ],
+"frames": [ SubResource( 8 ), SubResource( 9 ) ],
 "loop": true,
-"name": "Hurt",
+"name": "Walking",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 18 ) ],
+"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 6 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 13 ), SubResource( 14 ) ],
+"frames": [ SubResource( 10 ), SubResource( 11 ) ],
 "loop": true,
-"name": "Walking",
+"name": "Hurt",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=13]
 resource_local_to_scene = true
 extents = Vector2( 4, 5 )
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=14]
 resource_local_to_scene = true
 extents = Vector2( 6.12475, 1.07716 )
 
-[sub_resource type="RectangleShape2D" id=16]
+[sub_resource type="RectangleShape2D" id=15]
 resource_local_to_scene = true
 extents = Vector2( 7, 2 )
 
@@ -69,21 +69,21 @@ collision_mask = 2
 script = ExtResource( 3 )
 
 [node name="AnimatedSprite" parent="." index="0"]
-frames = SubResource( 15 )
+frames = SubResource( 12 )
 animation = "Idle"
-frame = 3
+frame = 2
 playing = true
 
 [node name="CollisionShape2D" parent="." index="1"]
 position = Vector2( -1, 2 )
-shape = SubResource( 9 )
+shape = SubResource( 13 )
 disabled = true
 
 [node name="DamageArea2D" parent="." index="3"]
 position = Vector2( -1, -3 )
 
 [node name="CollisionShape2D" parent="DamageArea2D" index="0"]
-shape = SubResource( 10 )
+shape = SubResource( 14 )
 
 [node name="DamagePlayerArea2D" type="Area2D" parent="." index="5" groups=[
 "Enemies",
@@ -95,6 +95,6 @@ shape = SubResource( 10 )
 "Enemy Weak Point",
 ]]
 position = Vector2( 0, 6 )
-shape = SubResource( 16 )
+shape = SubResource( 15 )
 
 [connection signal="body_entered" from="DamagePlayerArea2D" to="." method="_on_DamagePlayerArea2D_body_entered"]

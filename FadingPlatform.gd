@@ -16,5 +16,5 @@ func init_tween():
 	tween.connect("tween_step", self, "on_tween_step")
 	tween.start()
 
-func on_tween_step(object, key, elapsed, value):
+func on_tween_step(_object, _key, _elapsed, _value):
 	hitbox.collidable = fall_through

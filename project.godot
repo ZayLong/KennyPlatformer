@@ -9,25 +9,67 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Actor",
+"language": "GDScript",
+"path": "res://Actors/Actor.gd"
+}, {
 "base": "Tween",
 "class": "CurveTween",
 "language": "GDScript",
 "path": "res://CurveTween/CurveTween.gd"
 }, {
+"base": "Actor",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://Enemy.gd"
+}, {
+"base": "Enemy",
+"class": "FlyingEnemy",
+"language": "GDScript",
+"path": "res://Flying_Enemy.gd"
+}, {
+"base": "Node2D",
+"class": "HitBox",
+"language": "GDScript",
+"path": "res://Hitbox.gd"
+}, {
+"base": "Actor",
+"class": "PlatformerPlayer",
+"language": "GDScript",
+"path": "res://Platformer_Player.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "PlayerController",
 "language": "GDScript",
 "path": "res://Actors/Player/Player.gd"
+}, {
+"base": "Node2D",
+"class": "Solid",
+"language": "GDScript",
+"path": "res://Solid.gd"
+}, {
+"base": "Enemy",
+"class": "WalkingEnemy",
+"language": "GDScript",
+"path": "res://Walking_Enemy.gd"
 } ]
 _global_script_class_icons={
+"Actor": "",
 "CurveTween": "",
-"PlayerController": ""
+"Enemy": "",
+"FlyingEnemy": "",
+"HitBox": "",
+"PlatformerPlayer": "",
+"PlayerController": "",
+"Solid": "",
+"WalkingEnemy": ""
 }
 
 [application]
 
 config/name="Kenny Platformer"
-run/main_scene="res://World.tscn"
+run/main_scene="res://NewWorld.tscn"
 config/icon="res://icon.png"
 
 [autoload]

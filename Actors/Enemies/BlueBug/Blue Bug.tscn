@@ -3,47 +3,47 @@
 [ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
 [ext_resource path="res://Actors/Enemies/BlueBug/Blue Bug.gd" type="Script" id=2]
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
 region = Rect2( 144, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=12]
-atlas = ExtResource( 1 )
-region = Rect2( 192, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=13]
-atlas = ExtResource( 1 )
-region = Rect2( 144, 0, 24, 24 )
-
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 1 )
 region = Rect2( 168, 0, 24, 24 )
 
-[sub_resource type="SpriteFrames" id=15]
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=5]
 resource_local_to_scene = true
 resource_name = "AnimatedSpriteBase"
 animations = [ {
-"frames": [ SubResource( 11 ), SubResource( 12 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
 "loop": true,
-"name": "Hurt",
+"name": "Walking",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 11 ) ],
+"frames": [ SubResource( 3 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 13 ), SubResource( 14 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
-"name": "Walking",
+"name": "Hurt",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=6]
 resource_local_to_scene = true
 extents = Vector2( 8, 5 )
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=7]
 resource_local_to_scene = true
 extents = Vector2( 6.12475, 1.07716 )
 
@@ -56,7 +56,7 @@ script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0.012867, 11.8467 )
-frames = SubResource( 15 )
+frames = SubResource( 5 )
 animation = "Hurt"
 offset = Vector2( -0.012867, -11.8467 )
 
@@ -64,7 +64,7 @@ offset = Vector2( -0.012867, -11.8467 )
 "Enemies",
 ]]
 position = Vector2( 0, 6 )
-shape = SubResource( 9 )
+shape = SubResource( 6 )
 
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( -8.158, 0 )
@@ -80,7 +80,7 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea2D"]
 position = Vector2( 0.280613, -0.210459 )
-shape = SubResource( 10 )
+shape = SubResource( 7 )
 one_way_collision = true
 
 [node name="Tween" type="Tween" parent="."]

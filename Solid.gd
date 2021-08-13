@@ -1,9 +1,7 @@
 extends "res://Wall.gd"
-
+class_name Solid
 var remainder = Vector2.ZERO
-func _ready():
-	print("TOP IS ", hitbox.top)
-	print("bottom IS ", hitbox.bottom)
+
 func move_rider_x(amount)->void:
 	remainder.x += amount
 	var move = round(remainder.x)
@@ -32,11 +30,8 @@ func move_rider_y(amount)->void:
 		for actor in CollisionManager.get_all_actors():
 			if hitbox.intersects(actor.hitbox, Vector2.ZERO):
 				if move > 0:
-					print(hitbox.bottom - actor.hitbox.top)
 					actor.move_y(hitbox.bottom - actor.hitbox.top, funcref(actor, "squish"))
 				else:
-					pass
-					#print(hitbox.top - actor.hitbox.bottom)
 					actor.move_y((hitbox.top - actor.hitbox.bottom), funcref(actor, "squish"))
 			elif riders.has(actor):
 				actor.move_y(move, null)

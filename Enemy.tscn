@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
+[ext_resource path="res://Hitbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Enemy.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 168, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 144, 0, 24, 24 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 24, 24 )
+
+[sub_resource type="SpriteFrames" id=5]
+resource_local_to_scene = true
+resource_name = "AnimatedSpriteBase"
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "Hurt",
+"speed": 5.0
+} ]
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Hitbox" parent="." instance=ExtResource( 2 )]
+x = -8
+y = -1
+width = 15
+height = 13
+color = Color( 0, 0, 1, 0 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0.012867, 11.8467 )
+frames = SubResource( 5 )
+animation = "Hurt"
+offset = Vector2( -0.012867, -11.8467 )
+
+[node name="Tween" type="Tween" parent="."]
