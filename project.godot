@@ -35,6 +35,16 @@ _global_script_classes=[ {
 "path": "res://Hitbox.gd"
 }, {
 "base": "Actor",
+"class": "MagicBlock",
+"language": "GDScript",
+"path": "res://Magic_Block.gd"
+}, {
+"base": "Actor",
+"class": "Pickup",
+"language": "GDScript",
+"path": "res://Pickup.gd"
+}, {
+"base": "Actor",
 "class": "PlatformerPlayer",
 "language": "GDScript",
 "path": "res://Platformer_Player.gd"
@@ -60,6 +70,8 @@ _global_script_class_icons={
 "Enemy": "",
 "FlyingEnemy": "",
 "HitBox": "",
+"MagicBlock": "",
+"Pickup": "",
 "PlatformerPlayer": "",
 "PlayerController": "",
 "Solid": "",
@@ -80,7 +92,8 @@ CollisionManager="*res://CollisionManager.gd"
 [display]
 
 window/size/width=640
-window/size/height=480
+window/size/height=360
+window/size/resizable=false
 
 [layer_names]
 

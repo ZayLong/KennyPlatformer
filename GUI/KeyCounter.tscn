@@ -7,7 +7,7 @@
 atlas = ExtResource( 1 )
 region = Rect2( 126, 18, 18, 18 )
 
-[node name="HBoxContainer" type="HBoxContainer"]
+[node name="KeyCounter" type="HBoxContainer"]
 margin_right = 640.0
 margin_bottom = 18.0
 script = ExtResource( 2 )

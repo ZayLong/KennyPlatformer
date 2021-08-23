@@ -39,11 +39,9 @@ script = ExtResource( 12 )
 
 [node name="Coin" parent="." instance=ExtResource( 8 )]
 position = Vector2( 123, -99 )
-frame = 0
 
 [node name="Coin2" parent="." instance=ExtResource( 8 )]
 position = Vector2( 141, -99 )
-frame = 0
 
 [node name="Block" parent="." instance=ExtResource( 9 )]
 position = Vector2( -21, -81 )

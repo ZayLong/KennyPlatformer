@@ -35,7 +35,7 @@ func move_x_exact(amount:float, callback)->void:
 	var step = sign(amount)
 	while(amount != 0):
 		# if we did hit a wall in either left or right direction (depending if step is 1/-1)
-		if CollisionManager.check_walls_collision(self, Vector2(step, 0)) || CollisionManager.check_tiles_collision(self, Vector2(step, 0)) || CollisionManager.check_actor_group_collision(self, "Actors", Vector2(step,0)):
+		if CollisionManager.check_walls_collision(self, Vector2(step, 0)) || CollisionManager.check_tiles_collision(self, Vector2(step, 0)) || CollisionManager.check_actor_group_collision(self, "Blocks", Vector2(step,0)).size() > 0:
 			# we hit something, execute our callback, normally will be a stop velocity on axis
 			callback.call_func()
 			return
@@ -60,7 +60,7 @@ func move_y_exact(amount:float, callback = null)->void:
 	var step = sign(amount)
 	while(amount != 0):
 		
-		if CollisionManager.check_walls_collision(self, Vector2(0, step)) || CollisionManager.check_tiles_collision(self, Vector2(0, step)) || CollisionManager.check_actor_group_collision(self, "Actors", Vector2(0,step)):
+		if CollisionManager.check_walls_collision(self, Vector2(0, step)) || CollisionManager.check_tiles_collision(self, Vector2(0, step)) || CollisionManager.check_actor_group_collision(self, "Blocks", Vector2(0,step)).size() > 0:
 			callback.call_func()
 			return
 		global_position.y += step

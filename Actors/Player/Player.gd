@@ -99,7 +99,7 @@ func collision_process()->void:
 				var reflect = collision.remainder.bounce(collision.normal)
 				print(reflect)
 				motion = motion.bounce(collision.normal)
-				move_and_slide(reflect)
+				var _result = move_and_slide(reflect)
 	pass
 			#take_damage()
 

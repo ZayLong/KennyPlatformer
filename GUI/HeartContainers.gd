@@ -32,7 +32,8 @@ func repaint_heart_containers(current_hp, max_hp):
 				add_child(heart_container)
 				heart_containers.append(heart_container)
 	
-	# now that we have the corret number of heart containers, we need to iterate over them and adjust whether or not they should be full/partial/empty
+	# now that we have the corret number of heart containers, we need to iterate 
+	# over them and adjust whether or not they should be full/partial/empty
 	for index in heart_containers.size():
 
 		var heart_container_ref = heart_containers[index]

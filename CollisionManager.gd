@@ -4,14 +4,24 @@ var tile_hitbox:HitBox
 var base_tilemap:TileMap
 
 # METHODS ============================================================================
-func check_actor_group_collision(entity:Actor, group:String, offset:Vector2)->bool:
+
+# run a check against a defined group of members
+# members have to have a hitbox property
+# if the intersect is true, add it to an array
+# at the end return the array
+# add an optional parameter find_one
+# this will return an array containing one element (if any)
+func check_actor_group_collision(entity:Actor, group:String, offset:Vector2, find_one:bool = false)->Array:
 	var group_members = get_tree().get_nodes_in_group(group)
+	var coliding_members:Array = []
 	for member in group_members: 
-		#member = member as Actor
-		if member != entity:
-			if entity.hitbox.intersects(member.hitbox, offset):
-				return true
-	return false
+		if "hitbox" in member:
+			if member != entity:
+				if entity.hitbox.intersects(member.hitbox, offset):
+					coliding_members.append(member)
+					if find_one:
+						return coliding_members
+	return coliding_members
 
 func check_walls_collision(entity:Actor, offset:Vector2)->bool:
 	var walls = get_tree().get_nodes_in_group("Walls")
@@ -48,12 +58,15 @@ func check_tiles_collision(entity:Actor, offset:Vector2)->bool:
 	return false
 	pass
 
+# made this so we can pass a generic hitbox into the collision manager, insteaed of always having to pass an actor
 func check_hitbox_against_tile(hitbox:HitBox, offset:Vector2)->bool:
 	if !base_tilemap:
 		base_tilemap = get_tree().get_nodes_in_group("BaseTileMap").front() as TileMap
 
 	# check interaction with solid tiles
 	var solid_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("solid"))
+	var pass_through_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("pass_through"))
+	solid_tiles.append_array(pass_through_tiles)
 	for tile in solid_tiles:
 		tile = tile as Vector2
 		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)

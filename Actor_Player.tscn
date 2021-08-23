@@ -1,15 +1,33 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Images/characters_packed.png" type="Texture" id=1]
 [ext_resource path="res://Platformer_Player.gd" type="Script" id=2]
 [ext_resource path="res://Hitbox.tscn" type="PackedScene" id=3]
 [ext_resource path="res://GUI/Camera2D.gd" type="Script" id=4]
+[ext_resource path="res://FX/StartRunningParticles2D.tscn" type="PackedScene" id=5]
+[ext_resource path="res://FX/LandingParticles2D.tscn" type="PackedScene" id=6]
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="Shader" id=8]
+code = "shader_type canvas_item;
+
+uniform vec4 flash_color : hint_color = vec4(1.0);
+uniform float flash_modifier : hint_range(0.0,1.0) = 0.0;
+void fragment(){
+	vec4 color = texture(TEXTURE, UV);
+	color.rgb = mix(color.rgb, flash_color.rgb, flash_modifier);
+	COLOR = color;
+}"
+
+[sub_resource type="ShaderMaterial" id=9]
+shader = SubResource( 8 )
+shader_param/flash_color = Color( 1, 1, 1, 1 )
+shader_param/flash_modifier = 0.0
+
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
 region = Rect2( 24, 0, 24, 24 )
 
@@ -17,10 +35,10 @@ region = Rect2( 24, 0, 24, 24 )
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 24, 24 )
 
-[sub_resource type="SpriteFrames" id=4]
+[sub_resource type="SpriteFrames" id=6]
 resource_local_to_scene = true
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"frames": [ SubResource( 4 ), SubResource( 5 ) ],
 "loop": true,
 "name": "Walking",
 "speed": 5.0
@@ -31,13 +49,32 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="Animation" id=7]
+resource_name = "DamageFlash"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:material:shader_param/flash_modifier")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.9 ]
+}
+
 [node name="Player" type="Node2D"]
+material = SubResource( 9 )
 script = ExtResource( 2 )
+LandingParticles2D = ExtResource( 6 )
+RunningParticles2D = ExtResource( 5 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 use_parent_material = true
 position = Vector2( -0.130203, 11.2182 )
-frames = SubResource( 4 )
+frames = SubResource( 6 )
 animation = "Idle"
 offset = Vector2( 0.130203, -11.2182 )
 
@@ -45,21 +82,33 @@ offset = Vector2( 0.130203, -11.2182 )
 x = -8
 y = -8
 height = 20
+color = Color( 0, 0, 1, 0 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.5, 0.5 )
+limit_left = 0
+limit_top = 0
+limit_right = 1920
+limit_bottom = 1080
 limit_smoothed = true
+drag_margin_h_enabled = true
+drag_margin_v_enabled = true
 smoothing_enabled = true
 smoothing_speed = 20.0
-drag_margin_left = 0.41
-drag_margin_top = 0.8
+drag_margin_top = 0.4
 drag_margin_right = 0.4
+editor_draw_limits = true
 editor_draw_drag_margin = true
 script = ExtResource( 4 )
 
 [node name="Tween" type="Tween" parent="Camera2D"]
 
 [node name="Timer" type="Timer" parent="Camera2D"]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/DamageFlash = SubResource( 7 )
 
 [connection signal="timeout" from="Camera2D/Timer" to="Camera2D" method="_on_Timer_timeout"]

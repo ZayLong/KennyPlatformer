@@ -1,31 +1,32 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://Images/tiles_packed.png" type="Texture" id=1]
-[ext_resource path="res://Images/large_debris.png" type="Texture" id=2]
-[ext_resource path="res://Props/Block/Block.gd" type="Script" id=3]
+[ext_resource path="res://Magic_Block.gd" type="Script" id=1]
+[ext_resource path="res://Images/tiles_packed.png" type="Texture" id=2]
+[ext_resource path="res://Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Images/large_debris.png" type="Texture" id=4]
 
 [sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 180, 18, 18, 18 )
 
 [sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 108, 0, 18, 18 )
 
 [sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 180, 0, 18, 18 )
 
 [sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 198, 18, 18, 18 )
 
 [sub_resource type="AtlasTexture" id=5]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 198, 0, 18, 18 )
 
 [sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 1 )
+atlas = ExtResource( 2 )
 region = Rect2( 144, 18, 18, 18 )
 
 [sub_resource type="SpriteFrames" id=7]
@@ -61,13 +62,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=8]
-extents = Vector2( 9, 9 )
-
-[sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 7.4803, 1.25 )
-
-[sub_resource type="ParticlesMaterial" id=10]
+[sub_resource type="ParticlesMaterial" id=8]
 lifetime_randomness = 0.6
 flag_disable_z = true
 direction = Vector3( 0, -1, 0 )
@@ -83,27 +78,21 @@ angle = 30.0
 scale = 0.4
 scale_random = 0.75
 
-[sub_resource type="RectangleShape2D" id=11]
-
-[node name="Block" type="StaticBody2D"]
-script = ExtResource( 3 )
+[node name="Magic_Block" type="Node2D"]
+script = ExtResource( 1 )
+block_item = 1
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 7 )
 animation = "Active - Normal"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 8 )
-
-[node name="TriggerArea2D" type="Area2D" parent="."]
-collision_layer = 8
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TriggerArea2D"]
-position = Vector2( 0.0949936, 8.67373 )
-rotation = 3.14159
-shape = SubResource( 9 )
-one_way_collision = true
+[node name="Hitbox" parent="." instance=ExtResource( 3 )]
+x = -9
+y = -9
+width = 18
+height = 18
+color = Color( 0, 0, 1, 0 )
+disable_color = Color( 0, 0, 1, 0 )
 
 [node name="ItemSpawnPosition2D" type="Position2D" parent="."]
 position = Vector2( 0, -18 )
@@ -115,19 +104,5 @@ one_shot = true
 speed_scale = 1.5
 explosiveness = 1.0
 randomness = 1.0
-process_material = SubResource( 10 )
-texture = ExtResource( 2 )
-
-[node name="KeyArea2D" type="Area2D" parent="."]
-__meta__ = {
-"_editor_description_": "for key block detection"
-}
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KeyArea2D"]
-shape = SubResource( 11 )
-
-[node name="Tween" type="Tween" parent="."]
-
-[connection signal="body_entered" from="TriggerArea2D" to="." method="_on_TriggerArea2D_body_entered" flags=6]
-[connection signal="body_entered" from="KeyArea2D" to="." method="_on_KeyArea2D_body_entered"]
-[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]
+process_material = SubResource( 8 )
+texture = ExtResource( 4 )
