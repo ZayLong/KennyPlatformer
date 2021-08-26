@@ -7,7 +7,7 @@
 [ext_resource path="res://FX/StartRunningParticles2D.tscn" type="PackedScene" id=5]
 [ext_resource path="res://FX/LandingParticles2D.tscn" type="PackedScene" id=6]
 
-[sub_resource type="Shader" id=8]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform vec4 flash_color : hint_color = vec4(1.0);
@@ -18,32 +18,32 @@ void fragment(){
 	COLOR = color;
 }"
 
-[sub_resource type="ShaderMaterial" id=9]
-shader = SubResource( 8 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 shader_param/flash_color = Color( 1, 1, 1, 1 )
 shader_param/flash_modifier = 0.0
 
-[sub_resource type="AtlasTexture" id=4]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 24, 0, 24, 24 )
 
-[sub_resource type="AtlasTexture" id=3]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 24, 24 )
 
 [sub_resource type="SpriteFrames" id=6]
 resource_local_to_scene = true
 animations = [ {
-"frames": [ SubResource( 4 ), SubResource( 5 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "Walking",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 3 ) ],
+"frames": [ SubResource( 5 ) ],
 "loop": true,
 "name": "Idle",
 "speed": 5.0
@@ -66,7 +66,7 @@ tracks/0/keys = {
 }
 
 [node name="Player" type="Node2D"]
-material = SubResource( 9 )
+material = SubResource( 2 )
 script = ExtResource( 2 )
 LandingParticles2D = ExtResource( 6 )
 RunningParticles2D = ExtResource( 5 )
@@ -82,7 +82,7 @@ offset = Vector2( 0.130203, -11.2182 )
 x = -8
 y = -8
 height = 20
-color = Color( 0, 0, 1, 0 )
+color = Color( 0, 0, 1, 0.792157 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true

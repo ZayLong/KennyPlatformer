@@ -17,6 +17,8 @@ var right setget ,get_right
 var top setget ,get_top
 var bottom setget ,get_bottom
 
+
+
 func _init(init_x:int = x, init_y:int = y, init_width:int = width, init_height:int = height):
 	x = init_x
 	y = init_y
@@ -48,12 +50,39 @@ func get_bottom()->float:
 	return global_position.y + y + height
 	pass
 
+
 func _draw()->void:
 	draw_rect(Rect2(x,y,width,height), color)
 	pass
 
 func _physics_process(_delta)->void:
-	update()
+	update() # update func for draw, wish this method name was more specific
+	pass
+
+# check if a single point is within the bounds of our hitbox
+# cool idea i had for more presise AABB collision detection. 
+# i'd like to elaborate more on this idea with quadrant within a hitbox too eventually
+# got the formula from this stackoverflow: https://stackoverflow.com/a/37865332
+func intersects_point(point:Vector2)->bool:
+	var left_top:Vector2 = Vector2(self.left, self.top) # A
+	var right_top:Vector2 = Vector2(self.right, self.top) # B
+	var right_bottom:Vector2 = Vector2(self.right, self.bottom) # C
+	var left_bottom:Vector2 = Vector2(self.left, self.bottom) # D
+	
+	# subtracting gives the vector between two points
+	var AB:Vector2 = Vector2(right_top.x - left_top.x, right_top.y - left_top.y)
+	var BC:Vector2 = Vector2(right_bottom.x - right_top.x, right_bottom.y - right_top.y)
+	var AP:Vector2 = Vector2(point.x - left_top.x, point.y - left_top.x)
+	var BP:Vector2 = Vector2(point.x - right_top.x, point.y - right_top.y)
+	
+	# get our scalar values
+	var dotABAP = AB.dot(AP)
+	var dotABAB = AB.dot(AB)
+	var dotBCBP = BC.dot(BP)
+	var dotBCBC = BC.dot(BC)
+	
+	# evaluate
+	return 0 <= dotABAP && dotABAP <= dotABAB && 0 <= dotBCBP && dotBCBP <= dotBCBC
 	pass
 
 # similar to regular intersects, but does the AABB calculation for a tile which does not have a hitbox

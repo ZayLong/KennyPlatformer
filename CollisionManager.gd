@@ -35,6 +35,12 @@ func check_walls_collision(entity:Actor, offset:Vector2)->bool:
 	return false
 # solid, intangible, pass_through, interactable are the named ids for our tiles
 func check_tiles_collision(entity:Actor, offset:Vector2)->bool:
+	# jump corner correction is a feature specific to a player object
+	# i feel like putting this here may be a seperation of concerns issue
+	# but for the time being this is the best place i can think to put it.
+	var potential_jump_corner_tiles:Array
+	var collided_with_solid_tile:bool = false
+	
 	if !base_tilemap:
 		base_tilemap = get_tree().get_nodes_in_group("BaseTileMap").front() as TileMap
 		
@@ -44,8 +50,21 @@ func check_tiles_collision(entity:Actor, offset:Vector2)->bool:
 		tile = tile as Vector2
 		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
 		if entity.hitbox.intersects_tile(global_tile_pos, base_tilemap.cell_size, offset):
-			return true
-	
+			collided_with_solid_tile = true
+			# we only will potentially jump correct if the entity is a player, and if said player hit its head against a tile
+			if entity is PlatformerPlayer && offset == Vector2.UP:
+				potential_jump_corner_tiles.append(tile)
+			
+	# we will only attempt a jump correction if we're colliding with ONE tile from above
+	# anything else implies we're hitting two tiles at once, implying we are NOT at a corner
+	if potential_jump_corner_tiles.size() == 1:
+		var tile = potential_jump_corner_tiles.front()
+		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
+		entity = entity as PlatformerPlayer
+		entity.jump_corner_correction(global_tile_pos, base_tilemap.cell_size)
+		
+	if collided_with_solid_tile:
+		return true
 	# check interaction with tiles we can pass through from underneath and drop down from
 	var pass_through_tiles:Array = base_tilemap.get_used_cells_by_id(base_tilemap.tile_set.find_tile_by_name("pass_through"))
 	for tile in pass_through_tiles:

@@ -186,23 +186,26 @@ func _process(delta:float)->void:
 # METHODS ============================================================================
 func detect_hit_collision()->void:
 	# are we stomping on an enemy? Lets do a little hop if so
+	var stomped_enemy:bool = false
 	
 	for member in CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.DOWN, true):
 		velocity.y = jump_force
+		stomped_enemy = true
 		# add stomp_hop bool. if stomp_hop is true, start stomp_hop timer
 		# if jump button is pressed before stomp_hop_timer hits zero, then we get a BIGGER jump
 		# this should be generalized so it can be used for a spring mechanism
 		# but the amount of jump the player gets from a spring would be bigger than what they would get from an enemy
 	
-	# we're colliding with an enemy from ANY other direction, we're in for it...
-	var collided_enemies:Array = []
-	collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.RIGHT, true))
-	collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.LEFT, true))
-	collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.UP, true))
+	if !stomped_enemy:
+		# we're colliding with an enemy from ANY other direction, we're in for it...
+		var collided_enemies:Array = []
+		collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.RIGHT, true))
+		collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.LEFT, true))
+		collided_enemies.append_array(CollisionManager.check_actor_group_collision(self, "Enemies", Vector2.UP, true))
 	
-	for member in collided_enemies:
-		take_damage(1, member.position)
-		break # we only want to get hurt ONCE even if we're being hit by multiple enemies all at once. Thoug the invincibility flag should prevent this anyway
+		for member in collided_enemies:
+			take_damage(1, member.position)
+			break # we only want to get hurt ONCE even if we're being hit by multiple enemies all at once. Thoug the invincibility flag should prevent this anyway
 
 	pass
 
@@ -267,7 +270,87 @@ func stop_invincibility()->void:
 	#animation_player.seek(0, true)
 
 	pass
-
+# needs alot of cleanup
+# takes in a tiles position and cell size
+# use this information to get vectors for the 4 points of a tile
+# check if any of a tiles points intersects our players hitbot
+# if the lower left point of a tile is intersecting us
+# and assuming we're intersecting the corner of no other tiles (based on how this method is called)
+# then we can sumize when we jumped, we hit the left corner of something
+# if we're far enough OUT from that corner (like half or more)
+# then instantly move the player's x position the difference between the corner we hit
+# and our corner opposite (i.e. we hit a left corner, the difference between that and OUR right corner is the amount we should move
+# this is all continant upon the player being in mid air, and actively holding the jump button
+# otherwise correction will not occour
+func jump_corner_correction(tile_pos:Vector2, cell_size:Vector2)->void:
+	# no jump correction needed if we're not in the air
+	if is_grounded:
+		return
+	
+	var tile_right:int = tile_pos.x + cell_size.x
+	var tile_left:int  = tile_pos.x
+	var tile_bottom:int = tile_pos.y + cell_size.y
+	var tile_top:int = tile_pos.y 
+	
+	# honestly pointless to test  A & B. We only need to test the bottom of the tile
+	# this is to basically test if any given vector is within our hitbox bounds.
+	# we will know which corner of a given tile is colliding with us
+	var A = hitbox.intersects_point(Vector2(tile_left, tile_top))
+	var B = hitbox.intersects_point(Vector2(tile_right, tile_top))
+	var C = hitbox.intersects_point(Vector2(tile_right, tile_bottom))
+	var D = hitbox.intersects_point(Vector2(tile_left, tile_bottom))
+	
+	# by converting booleans to ints, we can easily test if only one out of all our variables are true
+	# we only want our hitbox to be currently colliding with ONE corner.
+	# if we're hitting more than one corner, we're not hitting an edge we can slide around
+	# i.e. two tiles next to each other will not count, or a long tile or if we jump dead center on a tile
+	if int(A) + int(B) + int(C) + int(D) == 1:
+		# though this int tells us only one was hit, it doesn't tell us which one so we must
+		# do this if else chain. which there was a cleaner way....
+		if A: # left_top
+			print("WE HIT TOP LEFT")
+			pass
+		elif B: # right_top
+			print("WE HIT TOP RIGHT")
+			pass
+		elif C: # right_bottom
+			print("hit bottom right")
+			# we actually dont need these vector2s....
+			var tile_c = Vector2(tile_right, tile_bottom)
+			var player_a = Vector2(hitbox.left, hitbox.top)
+			
+			# if we hit the bottom RIGHT corner, so we can assume OUR right corner
+			# is ahead of the tile's right corner. Our left orner also needs to be ahead for us to clear this corner
+			# so we take the difference between our left corner which is behind and the tiles right corner which is ahead
+			# this is the distace our player will instantly move to clear this corner
+			var ca_difference = tile_right - hitbox.left
+			# if the difference is half our hitbox or less, then we move
+			# i.e. what if the player meets all the conditions when hitting a corner
+			# but they're not that far out, like a pixel or two, it would be jarring to correct such a long distance
+			# we weould be moving the player by more than half their whole width
+			# so we want to make sure that the player is at LEAST half the corner before helping them out and correcting things.
+			if abs(ca_difference) - 1 <= hitbox.width / 2:
+				# lastly, we only want to corner correct if the player is still holding jump
+				# this should make it feel more smooth, as the player is folowing through on their complete jump.
+				# fi the player is not holding jump when we corner correct it may be more jarring
+				if Input.is_action_pressed("ui_up"):
+					print("jump correct right")
+					global_position.x += ca_difference
+			pass
+		elif D: # left_bottom
+			print("hit bottom left")
+			var tile_d = Vector2(tile_left, tile_bottom)
+			var player_b = Vector2(hitbox.right, hitbox.top)
+			var db_difference = tile_left - hitbox.right
+			# if when we hit the edge, our furthest edge is slightly more than half away, we will jump correct
+			if abs(db_difference) - 1 <= hitbox.width / 2:
+				if Input.is_action_pressed("ui_up"):
+					print("jump correct left")
+					global_position.x += db_difference
+			pass
+		
+		
+	pass
 
 func collect_coin(coin_value:int)->void:
 	print("GOT A COIN")
