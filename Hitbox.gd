@@ -63,11 +63,11 @@ func _physics_process(_delta)->void:
 # cool idea i had for more presise AABB collision detection. 
 # i'd like to elaborate more on this idea with quadrant within a hitbox too eventually
 # got the formula from this stackoverflow: https://stackoverflow.com/a/37865332
-func intersects_point(point:Vector2)->bool:
-	var left_top:Vector2 = Vector2(self.left, self.top) # A
-	var right_top:Vector2 = Vector2(self.right, self.top) # B
-	var right_bottom:Vector2 = Vector2(self.right, self.bottom) # C
-	var left_bottom:Vector2 = Vector2(self.left, self.bottom) # D
+func intersects_point(point:Vector2, offset:Vector2)->bool:
+	var left_top:Vector2 = Vector2(self.left, self.top) + offset # A
+	var right_top:Vector2 = Vector2(self.right, self.top) + offset # B
+	var right_bottom:Vector2 = Vector2(self.right, self.bottom) + offset # C
+	var left_bottom:Vector2 = Vector2(self.left, self.bottom) + offset# D
 	
 	# subtracting gives the vector between two points
 	var AB:Vector2 = Vector2(right_top.x - left_top.x, right_top.y - left_top.y)

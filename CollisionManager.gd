@@ -61,7 +61,7 @@ func check_tiles_collision(entity:Actor, offset:Vector2)->bool:
 		var tile = potential_jump_corner_tiles.front()
 		var global_tile_pos:Vector2 = base_tilemap.map_to_world(tile)
 		entity = entity as PlatformerPlayer
-		entity.jump_corner_correction(global_tile_pos, base_tilemap.cell_size)
+		entity.jump_corner_correction(global_tile_pos, base_tilemap.cell_size, Vector2.UP)
 		
 	if collided_with_solid_tile:
 		return true

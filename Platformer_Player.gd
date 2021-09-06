@@ -282,7 +282,7 @@ func stop_invincibility()->void:
 # and our corner opposite (i.e. we hit a left corner, the difference between that and OUR right corner is the amount we should move
 # this is all continant upon the player being in mid air, and actively holding the jump button
 # otherwise correction will not occour
-func jump_corner_correction(tile_pos:Vector2, cell_size:Vector2)->void:
+func jump_corner_correction(tile_pos:Vector2, cell_size:Vector2, offset:Vector2)->void:
 	# no jump correction needed if we're not in the air
 	if is_grounded:
 		return
@@ -295,16 +295,21 @@ func jump_corner_correction(tile_pos:Vector2, cell_size:Vector2)->void:
 	# honestly pointless to test  A & B. We only need to test the bottom of the tile
 	# this is to basically test if any given vector is within our hitbox bounds.
 	# we will know which corner of a given tile is colliding with us
-	var A = hitbox.intersects_point(Vector2(tile_left, tile_top))
-	var B = hitbox.intersects_point(Vector2(tile_right, tile_top))
-	var C = hitbox.intersects_point(Vector2(tile_right, tile_bottom))
-	var D = hitbox.intersects_point(Vector2(tile_left, tile_bottom))
-	
+	var A = hitbox.intersects_point(Vector2(tile_left, tile_top), offset)
+	var B = hitbox.intersects_point(Vector2(tile_right, tile_top), offset)
+	var C = hitbox.intersects_point(Vector2(tile_right, tile_bottom), offset)
+	var D = hitbox.intersects_point(Vector2(tile_left, tile_bottom), offset)
+	print("POST POINT CALC")
+	print(C)
+	print(D)
+	#print(C)
+	#print(D)
 	# by converting booleans to ints, we can easily test if only one out of all our variables are true
 	# we only want our hitbox to be currently colliding with ONE corner.
 	# if we're hitting more than one corner, we're not hitting an edge we can slide around
 	# i.e. two tiles next to each other will not count, or a long tile or if we jump dead center on a tile
 	if int(A) + int(B) + int(C) + int(D) == 1:
+		print("MADE IT HERE")
 		# though this int tells us only one was hit, it doesn't tell us which one so we must
 		# do this if else chain. which there was a cleaner way....
 		if A: # left_top
