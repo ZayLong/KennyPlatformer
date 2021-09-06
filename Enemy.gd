@@ -13,6 +13,9 @@ onready var animated_sprite:AnimatedSprite = $AnimatedSprite
 # CORE ============================================================================
 func _ready()->void:
 	add_to_group("Enemies")
+	tween.interpolate_property(animated_sprite, "scale:x", 2.15, 1,0.4,Tween.TRANS_QUINT,Tween.EASE_OUT)
+	tween.interpolate_property(animated_sprite, "scale:y", 0.15, 1,0.4,Tween.TRANS_QUINT,Tween.EASE_OUT)
+	tween.connect("tween_all_completed", self, "_on_tween_all_completed")
 
 
 
@@ -33,9 +36,7 @@ func hit_by_player_collision()->void:
 	
 func take_damage_routine()->void:
 	#instance a hit effect
-	tween.interpolate_property(animated_sprite, "scale:x", 2.15, 1,0.4,Tween.TRANS_QUINT,Tween.EASE_OUT)
-	tween.interpolate_property(animated_sprite, "scale:y", 0.15, 1,0.4,Tween.TRANS_QUINT,Tween.EASE_OUT)
-	tween.connect("tween_all_completed", self, "_on_tween_all_completed")
+
 	tween.start()
 	pass
 
