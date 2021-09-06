@@ -1,0 +1,108 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Props/MagicBlocks/Magic_Block.gd" type="Script" id=1]
+[ext_resource path="res://Images/tiles_packed.png" type="Texture" id=2]
+[ext_resource path="res://AABB/General/Hitbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Images/large_debris.png" type="Texture" id=4]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 180, 18, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 108, 0, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 180, 0, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 198, 18, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 198, 0, 18, 18 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 144, 18, 18, 18 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ SubResource( 1 ) ],
+"loop": true,
+"name": "Inactive - Diamond",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "Active - Normal",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ) ],
+"loop": true,
+"name": "Active - Diamond",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 4 ) ],
+"loop": true,
+"name": "Inactive - Coin",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 5 ) ],
+"loop": true,
+"name": "Active - Coin",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 6 ) ],
+"loop": true,
+"name": "Active - Key",
+"speed": 5.0
+} ]
+
+[sub_resource type="ParticlesMaterial" id=8]
+lifetime_randomness = 0.6
+flag_disable_z = true
+direction = Vector3( 0, -1, 0 )
+spread = 30.0
+gravity = Vector3( 0, 280, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.25
+angular_velocity = 600.0
+angular_velocity_random = 0.6
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 30.0
+scale = 0.4
+scale_random = 0.75
+
+[node name="Magic_Block" type="Node2D"]
+script = ExtResource( 1 )
+block_item = 1
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 7 )
+animation = "Active - Normal"
+
+[node name="Hitbox" parent="." instance=ExtResource( 3 )]
+x = -9
+y = -9
+width = 18
+height = 18
+color = Color( 0, 0, 1, 0 )
+disable_color = Color( 0, 0, 1, 0 )
+
+[node name="ItemSpawnPosition2D" type="Position2D" parent="."]
+position = Vector2( 0, -18 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+emitting = false
+lifetime = 1.5
+one_shot = true
+speed_scale = 1.5
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource( 8 )
+texture = ExtResource( 4 )

@@ -1,0 +1,183 @@
+{
+	"textures": [
+		{
+			"image": "passthrough_tilemap.png",
+			"size": {
+				"w": 198,
+				"h": 18
+			},
+			"sprites": [
+				{
+					"filename": "tile_0012.png",
+					"region": {
+						"x": 0,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0013.png",
+					"region": {
+						"x": 18,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0014.png",
+					"region": {
+						"x": 36,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0015.png",
+					"region": {
+						"x": 54,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0099.png",
+					"region": {
+						"x": 72,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0119.png",
+					"region": {
+						"x": 90,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0146.png",
+					"region": {
+						"x": 108,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0147.png",
+					"region": {
+						"x": 126,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0153.png",
+					"region": {
+						"x": 144,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0154.png",
+					"region": {
+						"x": 162,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				},
+				{
+					"filename": "tile_0155.png",
+					"region": {
+						"x": 180,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					},
+					"margin": {
+						"x": 0,
+						"y": 0,
+						"w": 0,
+						"h": 0
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "1.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:2e4f05c526cd795b03be8e5d023b64ad:3ec5812188acee0094111a29cce482a9:5f4bc8c2647fd918a8a3df50df3205f1$"
+	}
+}

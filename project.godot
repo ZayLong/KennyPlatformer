@@ -12,70 +12,64 @@ _global_script_classes=[ {
 "base": "Node2D",
 "class": "Actor",
 "language": "GDScript",
-"path": "res://Actors/Actor.gd"
-}, {
-"base": "Tween",
-"class": "CurveTween",
-"language": "GDScript",
-"path": "res://CurveTween/CurveTween.gd"
+"path": "res://AABB/Actors/Actor.gd"
 }, {
 "base": "Actor",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://Enemy.gd"
+"path": "res://AABB/Actors/Enemies/Enemy.gd"
 }, {
 "base": "Enemy",
 "class": "FlyingEnemy",
 "language": "GDScript",
-"path": "res://Flying_Enemy.gd"
+"path": "res://AABB/Actors/Enemies/Flying/Flying_Enemy.gd"
 }, {
 "base": "Node2D",
 "class": "HitBox",
 "language": "GDScript",
-"path": "res://Hitbox.gd"
+"path": "res://AABB/General/Hitbox.gd"
 }, {
 "base": "Actor",
 "class": "MagicBlock",
 "language": "GDScript",
-"path": "res://Magic_Block.gd"
+"path": "res://Props/MagicBlocks/Magic_Block.gd"
 }, {
 "base": "Actor",
 "class": "Pickup",
 "language": "GDScript",
-"path": "res://Pickup.gd"
+"path": "res://Props/Pickup/Pickup.gd"
 }, {
 "base": "Actor",
 "class": "PlatformerPlayer",
 "language": "GDScript",
-"path": "res://Platformer_Player.gd"
+"path": "res://AABB/Actors/Player/Platformer_Player.gd"
 }, {
-"base": "KinematicBody2D",
-"class": "PlayerController",
-"language": "GDScript",
-"path": "res://Actors/Player/Player.gd"
-}, {
-"base": "Node2D",
+"base": "Wall",
 "class": "Solid",
 "language": "GDScript",
-"path": "res://Solid.gd"
+"path": "res://AABB/Solids/Solid.gd"
 }, {
 "base": "Enemy",
 "class": "WalkingEnemy",
 "language": "GDScript",
-"path": "res://Walking_Enemy.gd"
+"path": "res://AABB/Actors/Enemies/Walking/Walking_Enemy.gd"
+}, {
+"base": "Node2D",
+"class": "Wall",
+"language": "GDScript",
+"path": "res://AABB/Solids/Wall.gd"
 } ]
 _global_script_class_icons={
 "Actor": "",
-"CurveTween": "",
 "Enemy": "",
 "FlyingEnemy": "",
 "HitBox": "",
 "MagicBlock": "",
 "Pickup": "",
 "PlatformerPlayer": "",
-"PlayerController": "",
 "Solid": "",
-"WalkingEnemy": ""
+"WalkingEnemy": "",
+"Wall": ""
 }
 
 [application]
@@ -87,7 +81,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GameManager="*res://GameManager.tscn"
-CollisionManager="*res://CollisionManager.gd"
+CollisionManager="*res://AABB/Managers/CollisionManager.gd"
 
 [display]
 
